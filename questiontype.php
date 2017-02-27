@@ -127,6 +127,7 @@ class qtype_oumultiresponse extends question_type {
 
         $options->answernumbering = $question->answernumbering;
         $options->shuffleanswers = $question->shuffleanswers;
+        $options->correctanswers = $question->correctanswers;   //modified
         $options = $this->save_combined_feedback_helper($options, $question, $context, true);
         $DB->update_record('question_oumultiresponse', $options);
 

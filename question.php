@@ -59,13 +59,38 @@ class qtype_oumultiresponse_question extends qtype_multichoice_multi_question
         $numwrong = $this->get_num_selected_choices($response) - $numright;
         $numcorrect = $this->get_num_correct_choices();
 
-        $fraction = max(min($numright, $numcorrect - $numwrong), 0) / $numcorrect;
+        //-->modified
+        global $DB;
+        $rec = $DB->get_record('question_oumultiresponse',
+                array('questionid' => $this->id), 'correctanswers');
+        $correctanswers = (int)$rec->correctanswers;
+        
+        //original procedure
+        if($rec->correctanswers === ''){
+            $fraction = max(min($numright, $numcorrect - $numwrong), 0) / $numcorrect;
 
-        $state = question_state::graded_state_for_fraction($fraction);
-        if ($state == question_state::$gradedwrong && $numright > 0) {
-            $state = question_state::$gradedpartial;
+            $state = question_state::graded_state_for_fraction($fraction);
+            if ($state == question_state::$gradedwrong && $numright > 0) {
+                $state = question_state::$gradedpartial;
+            }
+        } else if($correctanswers == 0){  //perfect choice
+            if(($numwrong == 0) && ($numright == $numcorrect)){
+                $fraction = (float)1.00;
+                $state = question_state::graded_state_for_fraction($fraction);
+            }else{
+                $fraction = (float)0.00;
+                $state = question_state::graded_state_for_fraction($fraction);
+            }
+        } else {  //correct answers to check is set
+            if(($numwrong == 0) && ($numright >= $correctanswers)){
+                $fraction = (float)1.00;
+                $state = question_state::graded_state_for_fraction($fraction);
+            }else{
+                $fraction = (float)0.00;
+                $state = question_state::graded_state_for_fraction($fraction);
+            }
         }
-
+        //<--modified
         return array($fraction, $state);
     }
 

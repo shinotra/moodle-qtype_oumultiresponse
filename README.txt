@@ -43,3 +43,18 @@ Then
 In interactive mode, the student is given more credit for choices that are
 selected correctly on the first try, even if it takes more tries to get
 some of the other choices correct.
+
+----
+modified 2017-02-27 by Toru Shinohara
+Add new feature.
+
+- Add 2 grading mode
+I add a field 'Correct answers' at 'Editing an OU multiple response question' screen,
+to add 2 grading mode.
+If the field 'Correct answers' is set to empty, original grading works.
+If the field 'Correct answers' is set to zero, complete answers are required to get full marks.
+If the field 'Correct answers' is set to 1 or higher, same correct answers are required to get full marks.
+
+- Add japanese language resources
+
+

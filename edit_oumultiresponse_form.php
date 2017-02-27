@@ -43,6 +43,16 @@ class qtype_oumultiresponse_edit_form extends question_edit_form {
                 get_string('answernumbering', 'qtype_multichoice'),
                 qtype_multichoice::get_numbering_styles());
         $mform->setDefault('answernumbering', 'abc');
+        
+        //-->modified:Add field for correct answer count to qualify
+        $mform->addElement('text', 'correctanswers', 
+                get_string('correctanswers', 'qtype_oumultiresponse'), array('size' => '4'));
+        $mform->setType('correctanswers', PARAM_RAW_TRIMMED);
+        $correctanswer_default = isset($this->question->options->correctanswers)? 
+                $this->question->options->correctanswers : '';
+        $mform->setDefault('correctanswers', $correctanswer_default);
+        $mform->addHelpButton('correctanswers', 'correctanswers', 'qtype_oumultiresponse');
+        //<--modified
 
         $this->add_per_answer_fields($mform, get_string('choiceno', 'qtype_multichoice', '{no}'),
                 null, max(5, QUESTION_NUMANS_START));
